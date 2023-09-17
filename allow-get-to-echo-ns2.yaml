@@ -1,0 +1,18 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-get-to-echo-ns2
+  namespace: ns2
+spec:
+  selector:
+    matchLabels:
+      istio.io/gateway-name: echo-service-account-ns2-gw
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            principals:
+              - cluster.local/ns/ns1/sa/sleep-service-account-ns1
+      to:
+        - operation:
+            methods: ["GET"]
